@@ -2,8 +2,8 @@
 .wrapper(v-if="me") 
   h1 {{me.email}}
   .subscriptions My subscriptions
-  li
-    ul(v-for="sub in me.subscriptions") {{sub.tier.owner.email}} - {{sub.tier.name}}
+  ul
+    li(v-for="sub in me.subscriptions") {{sub.tier.owner.email}} - {{sub.tier.name}} (Expires at: {{sub.expiresAt}})
 </template>
 
 <script>
@@ -29,7 +29,6 @@ export default {
             owner {
               email
             }
-            # expiresAt
           }
           subscriptions {
             tier {
