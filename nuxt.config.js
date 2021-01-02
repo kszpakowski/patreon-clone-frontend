@@ -31,10 +31,23 @@ export default {
     'nuxt-buefy',
     // https://go.nuxtjs.dev/axios
     '@nuxtjs/axios',
+    // Doc: https://github.com/nuxt-community/apollo-module
+    '@nuxtjs/apollo',
+    ['@nuxtjs/proxy', { pathRewrite: { '^/api': '/' } }],
   ],
 
   // Axios module configuration (https://go.nuxtjs.dev/config-axios)
   axios: {},
+  apollo: {
+    clientConfigs: {
+      default: {
+        httpEndpoint: 'http://localhost:3000/api/',
+      },
+    },
+  },
+  proxy: {
+    '/api': 'http://localhost:4000/',
+  },
 
   // Build Configuration (https://go.nuxtjs.dev/config-build)
   build: {},

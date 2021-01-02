@@ -1,34 +1,48 @@
-<template>
-  <section class="section">
-    <div class="columns is-mobile">
-      <card title="Free" icon="github">
-        Open source on <a href="https://github.com/buefy/buefy"> GitHub </a>
-      </card>
-
-      <card title="Responsive" icon="cellphone-link">
-        <b class="has-text-grey"> Every </b> component is responsive
-      </card>
-
-      <card title="Modern" icon="alert-decagram">
-        Built with <a href="https://vuejs.org/"> Vue.js </a> and
-        <a href="http://bulma.io/"> Bulma </a>
-      </card>
-
-      <card title="Lightweight" icon="arrange-bring-to-front">
-        No other internal dependency
-      </card>
-    </div>
-  </section>
+<template lang="pug">
+.wrapper(v-if="me") 
+  h1 {{me.email}}
+  .subscriptions My subscriptions
+  li
+    ul(v-for="sub in me.subscriptions") {{sub.tier.owner.email}} - {{sub.tier.name}}
 </template>
 
 <script>
-import Card from '~/components/Card'
+import gql from 'graphql-tag'
 
 export default {
-  name: 'HomePage',
-
-  components: {
-    Card,
+  components: {},
+  apollo: {
+    me: gql`
+      {
+        me {
+          id
+          email
+          posts {
+            title
+            tier {
+              name
+            }
+          }
+          tiers {
+            name
+            price
+            owner {
+              email
+            }
+            # expiresAt
+          }
+          subscriptions {
+            tier {
+              name
+              owner {
+                email
+              }
+            }
+            expiresAt
+          }
+        }
+      }
+    `,
   },
 }
 </script>
