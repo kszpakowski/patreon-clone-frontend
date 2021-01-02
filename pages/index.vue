@@ -3,7 +3,10 @@
   h1 {{me.email}}
   .subscriptions My subscriptions
   ul
-    li(v-for="sub in me.subscriptions") {{sub.tier.owner.email}} - {{sub.tier.name}} (Expires at: {{sub.expiresAt}})
+    li(v-for="sub in me.subscriptions")
+      <nuxt-link :to="sub.tier.owner.name" exact-active-class="is-active">
+        span {{sub.tier.owner.name}} - {{sub.tier.name}} (Expires at: {{sub.expiresAt}})
+      </nuxt-link> 
 </template>
 
 <script>
@@ -34,7 +37,7 @@ export default {
             tier {
               name
               owner {
-                email
+                name
               }
             }
             expiresAt
