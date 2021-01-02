@@ -1,9 +1,12 @@
 <template lang="pug">
-  .wrapper
-    h1 {{$route.params.profile}}
-    .tiers(v-if="profile")
+  .wrapper(v-if="profile")
+    h1 {{profile.name}}
+    .tiers Tiers
+      p(v-for="tier in profile.tiers") {{tier.name}} - {{tier.price}}
+    .posts
       ul
-        li(v-for="tier in profile.tiers") {{tier.name}} - {{tier.price}}
+        li(v-for="post in profile.posts")
+          h1 {{post.title}}
 </template>
 
 <script>
@@ -23,6 +26,9 @@ export default {
               name
               description
               price
+            }
+            posts {
+              title
             }
           }
         }
