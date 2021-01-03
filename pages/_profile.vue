@@ -1,6 +1,6 @@
 <template lang="pug">
   .wrapper(v-if="profile")
-    .top
+    div
       figure.image
         img(src="cover.png")
       .conteiner.has-text-centered
@@ -8,8 +8,11 @@
             img.is-rounded(src="avatar.png")
           h1.title {{profile.name}}
           h2.subtitle Creates patreon clones
-      //- .tiers Tiers
-        span.tier(v-for="tier in profile.tiers") {{tier.name}} - {{tier.price}}
+    .section.has-text-centered
+      h1.title Select a membership level
+      .container
+        .is-flex.is-justify-content-center
+          Tier.mx-2(v-for="tier in profile.tiers" :tier="tier" :key="tier.id")
     .section
       .container.column.is-half
         p.title.has-text-centered Recent posts by {{ profile.name }}
@@ -21,10 +24,12 @@
 <script>
 import gql from 'graphql-tag'
 import Post from '@/components/Post'
+import Tier from '@/components/Tier'
 
 export default {
   components: {
     Post,
+    Tier,
   },
   apollo: {
     profile: {
