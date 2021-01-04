@@ -10,16 +10,21 @@
       .field
         .control
           label.radio(v-for="tier in me.tiers" :key="tier.id")
-            input(v-model="post.tierId" type="radio" name="tier" :value="tier.id")
-            | {{ tier.name }}
-      button.button(type="button" @click="handleCreatePost") Post
+            input(v-model="post.tierId" type="radio" name="tier" :value="tier.id").is-hidden
+            Tier(:tier="tier" :class="{ selected: post.tierId===tier.id}")
+        .help.is-warning(v-if="!post.tierId")
+          p select tier
+      .field
+        .control
+          button.button.is-primary(type="button" @click="handleCreatePost" :disabled="!post.tierId") Post
 </template>
 
 <script>
 import gql from 'graphql-tag'
+import Tier from '@/components/Tier'
 
 export default {
-  components: {},
+  components: { Tier },
   data() {
     return {
       post: {
@@ -62,3 +67,9 @@ export default {
   },
 }
 </script>
+
+<style scoped>
+.selected {
+  border: solid 2px greenyellow;
+}
+</style>

@@ -2,7 +2,7 @@
   .card
     .card-content
       p.title {{tier.name}}
-      p.subtitle {{ tier.price }} $
+      p.subtitle(v-if="tier.price") {{ tier.price }} $
 </template>
 
 <script>
