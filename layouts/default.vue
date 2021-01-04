@@ -1,36 +1,31 @@
-<template>
-  <div>
-    <nav
-      class="navbar header has-shadow is-fixed-top"
-      role="navigation"
-      aria-label="main navigation"
-    >
-      <div class="navbar-brand">
-        <a class="navbar-item" href="/">
-          <!-- <img src="~assets/buefy.png" alt="Buefy" height="28" /> -->
-          <p>Logo</p>
-        </a>
-
-        <!-- <div class="navbar-burger">
-          <span />
-          <span />
-          <span />
-        </div> -->
-      </div>
-    </nav>
-
-    <section class="main-content">
-      <div class="columns">
-        <div class="column is-full">
-          <nuxt />
-        </div>
-      </div>
-    </section>
-  </div>
+<template lang="pug">
+  div
+    nav.navbar.header.has-shadow.is-fixed-top.is-white(role="navigation" aria-label="main navigation")
+      .navbar-brand
+        .navbar-item
+          NuxtLink(to="/") Logo
+      .navbar-menu
+        .navbar-end
+          .navbar-item.has-dropdown.is-hoverable(v-if="me")
+            a.navbar-link {{ me.name }}
+            .navbar-dropdown(@click="handleLogout")
+              a.navbar-item Logout
+          .navbar-item(v-else)
+            NuxtLink(to="/login") Login
+    section.main-content
+      .columns.is-centered
+        .column.is-full
+          nuxt
 </template>
 
 <script>
+import gql from 'graphql-tag'
+import Login from '@/components/Login'
+
 export default {
+  components: {
+    Login,
+  },
   data() {
     return {
       items: [
@@ -46,6 +41,30 @@ export default {
         },
       ],
     }
+  },
+  methods: {
+    async handleLogout() {
+      await this.$apolloHelpers.onLogout()
+      this.$router.push({
+        path: '/',
+      })
+    },
+  },
+  head() {
+    return {
+      bodyAttrs: {
+        class: 'has-navbar-fixed-top',
+      },
+    }
+  },
+  apollo: {
+    me: gql`
+      {
+        me {
+          name
+        }
+      }
+    `,
   },
 }
 </script>
