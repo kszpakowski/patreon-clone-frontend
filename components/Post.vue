@@ -1,8 +1,10 @@
 <template lang="pug">
   .card
     .card-image
-      figure.image.is-1by1
-        img(src="post.jpg")
+      b-carousel
+        b-carousel-item(v-for="attachment in post.attachments" :key="attachment.url")
+          figure.image
+            img(:src="attachment.url")
     .card-content
       p.heading {{post.createdAt}}
       p.title.is-4 {{post.title}} 

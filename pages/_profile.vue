@@ -2,10 +2,10 @@
   .wrapper(v-if="profile")
     div
       figure.image
-        img(src="cover.png")
+        img(:src="profile.coverPhotoUrl")
       .conteiner.has-text-centered
           figure.avatar.image.is-128x128.has-image-centered
-            img.is-rounded(src="avatar.png")
+            img.is-rounded(:src="profile.avatarUrl")
           h1.title {{profile.name}}
           h2.subtitle Creates patreon clones
     .section.has-text-centered
@@ -14,7 +14,7 @@
         .is-flex.is-justify-content-center
           Tier.mx-2(v-for="tier in profile.tiers" :tier="tier" :key="tier.id")
     .section
-      .container.column.is-half
+      .container.column.is-two-fifths
         p.title.has-text-centered Recent posts by {{ profile.name }}
         .posts(v-for="post in profile.posts")
           .section
@@ -37,6 +37,8 @@ export default {
         query getProfile($name: String!) {
           profile(name: $name) {
             name
+            avatarUrl
+            coverPhotoUrl
             bio
             tiers {
               id
@@ -47,6 +49,9 @@ export default {
             posts {
               title
               createdAt
+              attachments {
+                url
+              }
             }
           }
         }
