@@ -6,8 +6,11 @@
       accept="image/*")
     p Drop here, or click to select files
     .files
-      .box.file.m-2(v-for="(file, i) in files")
+      .box.file.m-2.p-0(v-for="(file, i) in files")
+        figure.image
+          img(:src="previews[i]" :onload="previewOnLoad(i)")
         .metadata
+          .overlay.is-overlay
           .is-flex.is-flex-direction-column.is-justify-content-center.is-overlay.p-2
             .delete(@click="deleteFile(i)")
             p.f-name {{file.name}} 
@@ -19,14 +22,23 @@ export default {
   data() {
     return {
       files: [],
+      previews: [],
     }
   },
   methods: {
     filesChange(_, files) {
       this.files.push(...files)
+      files.forEach((file) => {
+        this.previews.push(URL.createObjectURL(file))
+      })
+    },
+    previewOnLoad(i) {
+      console.log(`Preview on load ${i}`)
+      // URL.revokeObjectURL(this.previews[i])
     },
     deleteFile(i) {
       this.files.splice(i, 1)
+      this.previews.splice(i, 1)
     },
   },
 }
@@ -86,7 +98,8 @@ export default {
   display: block;
 }
 
-.test {
-  height: 100%;
+.metadata .overlay {
+  background-color: #fff;
+  opacity: 80%;
 }
 </style>
