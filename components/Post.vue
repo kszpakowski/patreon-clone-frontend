@@ -29,3 +29,5 @@ export default {
   },
 }
 </script>
+
+// TODO on click display modal with full size photo

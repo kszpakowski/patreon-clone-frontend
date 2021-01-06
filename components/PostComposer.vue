@@ -1,55 +1,69 @@
 <template lang="pug">
-  .card(v-if="me")
-    .card-header
-      .card-header-title Create new post
-    .card-content
-      .columns.is-centered
-        .column.is-half
-          section.section
-            Post(:post="{...post, createdAt:Date.now()}")
-        .column.is-half
-          section.section
-            Post(:post="{...post, createdAt:Date.now(), title: '[Blurred] ' + post.title}")
-    .card-footer
-      .container
-        .box
+  .columns(v-if="me")
+    .column.is-two-thirds
+      .card
+        .card-header
+          .card-header-icon
+            b-icon(icon="camera" type="is-primary")
+          .card-header-title Images
+        .card-content
+          Dropzone
+        footer.card-footer.p-2
           .field
-            b-upload(v-model="post.files" multiple drag-drop expanded)
-              section.section
-                .content.has-text-centered
-                  p
-                    b-icon(icon="upload" size="is-large")
-                  p Drop your files here or clik to upload
-          .field
-            label.label Title 
+            .label.is-flex
+              label Post title
+              .help.is-danger.ml-1(v-if="!post.title") required
             .control
               input.input(v-model="post.title" type="text" placeholder="Text input")
-          .field
-            label.label Tier
-            .control
-              label.radio(v-for="tier in me.tiers" :key="tier.id")
-                input(v-model="post.tierId" type="radio" name="tier" :value="tier.id").is-hidden
-                Tier(:tier="tier" :class="{ selected: post.tierId===tier.id}")
-            .help.is-warning(v-if="!post.tierId")
-              p select tier
-          .field
-            .control
-              button.button.is-primary(type="button" @click="handleCreatePost" :disabled="!post.tierId") Post
+    .column
+      .field
+          .control
+            button.button.is-primary.is-rounded(type="button" @click="handleCreatePost" :disabled="!post.tierId") Publish now
+      .box
+        .field
+          label.label
+            b-icon(icon="lock" type="is-primary")
+            span Who can see this post?
+          .control
+            label.radio
+              input(v-model="post.accessLvl" type="radio" name="accessLvl" value="public")
+              span.ml-1 Public
+          .control
+            label.radio
+              input(v-model="post.accessLvl" type="radio" name="accessLvl" value="patreons")
+              span.ml-1 Patreons
+          .control
+            label.radio
+              input(v-model="post.accessLvl" type="radio" name="accessLvl" value="tier")
+              span.ml-1 Select tier
+        .field(v-if="post.accessLvl==='tier'")
+          label.label Tier
+          .control
+            label.radio(v-for="tier in me.tiers" :key="tier.id")
+              input(v-model="post.tierId" type="radio" name="tier" :value="tier.id")
+              span.ml-1 {{ tier.name }}
+        .field
+          .control
+            label.label Teaser text
+            p.help Teaser text will display publicly to fans and patreons who do not have access to this post.
+            input.input
 </template>
 
 <script>
 import gql from 'graphql-tag'
 import Tier from '@/components/Tier'
 import Post from '@/components/Post'
+import Dropzone from '@/components/Dropzone'
 
 export default {
-  components: { Tier, Post },
+  components: { Tier, Post, Dropzone },
   data() {
     return {
       post: {
         title: '',
         tierId: '',
         files: [],
+        accessLvl: 'tier',
       },
     }
   },
