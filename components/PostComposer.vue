@@ -7,7 +7,7 @@
             b-icon(icon="camera" type="is-primary")
           .card-header-title Images
         .card-content
-          Dropzone
+          Dropzone(@change="updateAttachments")
         footer.card-footer.p-2
           .field
             .label.is-flex
@@ -18,7 +18,7 @@
     .column
       .field
           .control
-            button.button.is-primary.is-rounded(type="button" @click="handleCreatePost" :disabled="!post.tierId") Publish now
+            button.button.is-primary.is-rounded(type="button" @click="handleCreatePost" :disabled="!readyToPost") Publish now
       .box
         .field
           label.label
@@ -65,6 +65,7 @@ export default {
         files: [],
         accessLvl: 'tier',
       },
+      attachments: [],
     }
   },
   apollo: {
@@ -80,13 +81,21 @@ export default {
       }
     `,
   },
+  computed: {
+    readyToPost() {
+      return !!this.post.title && !!this.post.tierId
+    },
+  },
   methods: {
+    updateAttachments(e) {
+      this.attachments.splice(0, this.attachments.length, ...e)
+    },
     async handleCreatePost() {
       const post = {
         title: this.post.title,
         tierId: parseInt(this.post.tierId),
       }
-      await this.$apollo.mutate({
+      const { data } = await this.$apollo.mutate({
         mutation: gql`
           mutation CreatePostMutation($title: String!, $tierId: Int!) {
             createPost(createPostInput: { title: $title, tierId: $tierId }) {
@@ -96,6 +105,35 @@ export default {
           }
         `,
         variables: post,
+      })
+
+      const id = data.createPost.id
+
+      for (let att of this.attachments) {
+        const url = await this.getUploadLink(id, att.name)
+        await this.uploadAttachment(url, att)
+      }
+      this.$emit('posted', data.createPost)
+    },
+    async getUploadLink(postId, fileName) {
+      const { data } = await this.$apollo.mutate({
+        mutation: gql`
+          mutation UploadPostAttachment($postId: Int!, $fileName: String!) {
+            uploadPostAttachment(
+              postUploadInput: { postId: $postId, fileName: $fileName }
+            ) {
+              uploadUrl
+            }
+          }
+        `,
+        variables: { postId, fileName },
+      })
+      return data.uploadPostAttachment.uploadUrl
+    },
+    async uploadAttachment(url, attachment) {
+      await fetch(url, {
+        method: 'PUT',
+        body: attachment,
       })
     },
   },

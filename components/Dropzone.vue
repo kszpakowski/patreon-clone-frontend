@@ -7,9 +7,6 @@
     p Drop here, or click to select files
     .files
       .box.file.m-2.p-0(v-for="(file, i) in files" :style="{ backgroundImage: 'url(' + previews[i] + ')' }")
-        //- figure.image
-          img(:src="previews[i]" :onload="previewOnLoad(i)")
-        //- div.is-overlay()
         .metadata
           .overlay.is-overlay
           .is-flex.is-flex-direction-column.is-justify-content-center.is-overlay.p-2
@@ -32,6 +29,7 @@ export default {
         ({ name }) => !this.files.map(({ name }) => name).includes(name)
       )
       this.files.push(...deduplicated)
+      this.$emit('change', this.files)
       deduplicated.forEach((file) => {
         this.previews.push(URL.createObjectURL(file))
       })
@@ -42,6 +40,7 @@ export default {
     deleteFile(i) {
       this.files.splice(i, 1)
       this.previews.splice(i, 1)
+      this.$emit('change', this.files)
     },
   },
 }
