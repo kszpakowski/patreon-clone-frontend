@@ -6,9 +6,10 @@
       accept="image/*")
     p Drop here, or click to select files
     .files
-      .box.file.m-2.p-0(v-for="(file, i) in files")
-        figure.image
+      .box.file.m-2.p-0(v-for="(file, i) in files" :style="{ backgroundImage: 'url(' + previews[i] + ')' }")
+        //- figure.image
           img(:src="previews[i]" :onload="previewOnLoad(i)")
+        //- div.is-overlay()
         .metadata
           .overlay.is-overlay
           .is-flex.is-flex-direction-column.is-justify-content-center.is-overlay.p-2
@@ -27,14 +28,16 @@ export default {
   },
   methods: {
     filesChange(_, files) {
-      this.files.push(...files)
-      files.forEach((file) => {
+      const deduplicated = Array.from(files).filter(
+        ({ name }) => !this.files.map(({ name }) => name).includes(name)
+      )
+      this.files.push(...deduplicated)
+      deduplicated.forEach((file) => {
         this.previews.push(URL.createObjectURL(file))
       })
     },
     previewOnLoad(i) {
-      console.log(`Preview on load ${i}`)
-      // URL.revokeObjectURL(this.previews[i])
+      URL.revokeObjectURL(this.previews[i])
     },
     deleteFile(i) {
       this.files.splice(i, 1)
@@ -70,6 +73,9 @@ export default {
   height: 128px;
   display: inline-block;
   position: relative;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
 }
 
 .f-name {
@@ -86,20 +92,23 @@ export default {
 }
 
 .metadata {
-  display: none;
+  visibility: hidden;
+  opacity: 0;
   position: absolute;
   left: 0;
   top: 0;
   width: 100%;
   height: 100%;
+  transition: visibility 0s, opacity 0.1s linear;
 }
 
 .file:hover .metadata {
-  display: block;
+  visibility: visible;
+  opacity: 1;
 }
 
 .metadata .overlay {
   background-color: #fff;
-  opacity: 80%;
+  opacity: 85%;
 }
 </style>
