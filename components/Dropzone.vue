@@ -8,8 +8,8 @@
     .files
       .box.file.m-2(v-for="(file, i) in files")
         .metadata
-          .delete(@click="deleteFile(i)")
           .is-flex.is-flex-direction-column.is-justify-content-center.is-overlay.p-2
+            .delete(@click="deleteFile(i)")
             p.f-name {{file.name}} 
             p.heading {{(file.size /1000/1000).toFixed(2)}} MB
 </template>
