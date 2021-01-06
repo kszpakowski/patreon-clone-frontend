@@ -6,7 +6,7 @@
           NuxtLink(to="/") Logo
       .navbar-menu
         .navbar-end
-          .navbar-item
+          .navbar-item(v-if="me")
             nuxt-link(to="/create-post") Create Post
           .navbar-item.has-dropdown.is-hoverable(v-if="me")
             a.navbar-link {{ me.name }}

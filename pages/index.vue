@@ -1,9 +1,6 @@
 <template lang="pug">
 .wrapper
-  .columns.is-centered(v-if="me") 
-    .column
-      .section
-        PostComposer
+  .columns(v-if="me") 
     .column.is-one-quarter
       .section
         p.title My subscriptions
