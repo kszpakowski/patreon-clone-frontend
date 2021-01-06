@@ -14,7 +14,7 @@
         .is-flex.is-justify-content-center
           Tier.mx-2(v-for="tier in profile.tiers" :tier="tier" :key="tier.id")
     .section
-      .container.column.is-two-fifths
+      .post-list.container.column.is-two-fifths
         p.title.has-text-centered Recent posts by {{ profile.name }}
         .posts(v-for="post in profile.posts")
           .section
@@ -73,5 +73,9 @@ export default {
   margin-top: -75px;
   border: solid 4px white;
   border-radius: 50%;
+}
+
+.post-list {
+  max-width: 550px !important;
 }
 </style>
