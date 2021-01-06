@@ -109,7 +109,7 @@ export default {
 
       const id = data.createPost.id
 
-      for (let att of this.attachments) {
+      for (const att of this.attachments) {
         const url = await this.getUploadLink(id, att.name)
         await this.uploadAttachment(url, att)
       }
