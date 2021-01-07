@@ -3,7 +3,8 @@
     nav.navbar.header.has-shadow.is-fixed-top.is-white(role="navigation" aria-label="main navigation")
       .navbar-brand
         .navbar-item
-          NuxtLink(to="/") Logo
+          NuxtLink(to="/") 
+            strong Patreon Clone
       .navbar-menu
         .navbar-end
           .navbar-item(v-if="me")
@@ -19,6 +20,13 @@
       .columns.is-centered
         .column.is-full
           nuxt
+    footer.footer
+      .content.has-text-centered
+        p
+          strong Patreon Clone
+          |  by 
+          a(href="https://github.com/kszpakowski") kszpakowski
+
 </template>
 
 <script>
@@ -71,3 +79,11 @@ export default {
   },
 }
 </script>
+
+<style scoped>
+.footer {
+  position: fixed;
+  width: 100%;
+  bottom: 0;
+}
+</style>
