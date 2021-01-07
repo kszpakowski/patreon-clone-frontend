@@ -12,11 +12,11 @@
       .card-footer-item.has-text-centered
         div
           p.heading Likes
-          p.subtitle 123
+          p.subtitle {{post.likesCount}}
       .card-footer-item.has-text-centered
         div
           p.heading Comments
-          p.subtitle 45
+          p.subtitle {{post.commentsCount}}
 </template>
 
 <script>

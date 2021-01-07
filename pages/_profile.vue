@@ -52,6 +52,10 @@ export default {
               attachments {
                 url
               }
+              commentsCount
+              likesCount
+              liked
+              canLike
             }
           }
         }
