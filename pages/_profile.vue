@@ -18,7 +18,7 @@
         p.title.has-text-centered Recent posts by {{ profile.name }}
         .posts(v-for="post in profile.posts")
           .section
-            Post(:post="post" @liked="post.liked=true; post.likesCount +=1" @unliked="post.liked=false; post.likesCount -=1")
+            Post(:post="post" @liked="post.liked=true; post.likesCount +=1" @unliked="post.liked=false; post.likesCount -=1" @commented="(e) => post.comments.push(e)")
 </template>
 
 <script>
@@ -54,6 +54,14 @@ export default {
                 url
               }
               commentsCount
+              comments {
+                createdAt
+                message
+                author {
+                  name
+                  avatarUrl
+                }
+              }
               likesCount
               liked
               canLike
@@ -64,6 +72,12 @@ export default {
       variables() {
         return { name: this.$route.params.profile }
       },
+    },
+  },
+  methods: {
+    handleCommented(e, post) {
+      console.log(e)
+      console.log(post)
     },
   },
 }
