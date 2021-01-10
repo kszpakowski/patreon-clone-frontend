@@ -18,7 +18,7 @@
         p.title.has-text-centered Recent posts by {{ profile.name }}
         .posts(v-for="post in profile.posts")
           .section
-            Post(:post="post" @liked="post.liked=true; post.likesCount +=1" @unliked="post.liked=false; post.likesCount -=1" @commented="(e) => post.comments.push(e)")
+            Post(:post="post" @liked="post.liked=true; post.likesCount +=1" @unliked="post.liked=false; post.likesCount -=1" @commented="(e) => {post.comments.push(e); post.commentsCount+=1;}")
 </template>
 
 <script>
