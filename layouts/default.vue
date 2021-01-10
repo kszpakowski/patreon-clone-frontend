@@ -10,8 +10,9 @@
             nuxt-link(to="/create-post") Create Post
           .navbar-item.has-dropdown.is-hoverable(v-if="me")
             a.navbar-link {{ me.name }}
-            .navbar-dropdown(@click="handleLogout")
-              a.navbar-item Logout
+            .navbar-dropdown
+              nuxt-link.navbar-item(to="/settings") Settings
+              a.navbar-item(@click="handleLogout") Logout
           .navbar-item(v-else)
             NuxtLink(to="/login") Login
     section.main-content
