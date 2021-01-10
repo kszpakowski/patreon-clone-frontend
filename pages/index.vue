@@ -26,10 +26,12 @@ export default {
           id
           title
           createdAt
+          locked
           attachments {
             url
           }
           commentsCount
+          canComment
           comments {
             createdAt
             message
@@ -43,6 +45,11 @@ export default {
           canLike
           author {
             name
+          }
+          tier {
+            id
+            name
+            price
           }
         }
       }

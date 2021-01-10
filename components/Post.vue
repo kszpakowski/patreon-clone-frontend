@@ -4,11 +4,28 @@
       b-carousel(:autoplay="false")
         b-carousel-item(v-for="attachment in post.attachments" :key="attachment.url")
           figure.image
-            img(:src="attachment.url")
+            img(:src="attachment.url" :class="{blurred: post.locked}")
+            .locked-overlay.is-overlay(v-if="post.locked")
+            .is-flex.is-flex-direction-column.is-justify-content-center.is-overlay.has-text-centered(v-if="post.locked")
+              .columns.is-centered
+                .column.is-half
+                    div
+                      p.m-2 🔒
+                      p.m-2
+                        strong.white Unlock this post by becoming a patreon
+                      nuxt-link(:to="`/subscribe/${post.tier.id}`")
+                        button.button.is-rounded.m-2 Join now {{post.tier.price > 0 ? ` for $${post.tier.price} per month`: ""}}
     .card-content
-      small
-        nuxt-link(v-if="post.author" :to="`/${post.author.name}`") {{post.author.name}}
-        |  {{post.createdAt | ago}}
+      .level
+        .level-left
+          small
+            nuxt-link(v-if="post.author" :to="`/${post.author.name}`") {{post.author.name}}
+            |  {{post.createdAt | ago}}
+        .level-right.locked(v-if="post.locked")
+          small 🔒 Locked
+          .box.unlock-info 
+            strong Who can see this post
+            p {{post.tier.name}}
       p.title.is-4.mt-2 {{post.title}} 
       .level
         .level-left
@@ -39,7 +56,7 @@
                   a Like 
                   a  · Reply
                   |  · {{comment.createdAt | ago}}
-        div
+        div(v-if="post.canComment")
           article.media
             .media-content
               .field
@@ -196,6 +213,37 @@ export default {
 
 .comments {
   width: 100%;
+}
+
+.unlock-info {
+  position: absolute;
+  left: -150px;
+  bottom: 8px;
+  width: 220px;
+  display: none;
+}
+
+.locked {
+  position: relative;
+  cursor: pointer;
+}
+
+.locked:hover .unlock-info,
+.unlock-info:hover {
+  display: block;
+}
+
+.blurred {
+  filter: blur(32px);
+}
+
+.locked-overlay {
+  background-color: black;
+  opacity: 50%;
+}
+
+.white {
+  color: #fff !important;
 }
 </style>
 
