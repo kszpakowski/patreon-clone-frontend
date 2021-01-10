@@ -6,10 +6,13 @@
           figure.image
             img(:src="attachment.url")
     .card-content
-      p
-        strong(v-if="post.author")
-          nuxt-link(:to="`/${post.author.name}`") {{post.author.name}}
-        small  · {{post.createdAt | ago}}
+      .level
+        .level-left
+          .level-item(v-if="post.author")
+            small
+              nuxt-link(:to="`/${post.author.name}`") {{post.author.name}}
+          .level-item
+            small {{post.createdAt | ago}}
       p.title.is-4.mt-2 {{post.title}} 
       .level
         .level-left
