@@ -74,3 +74,9 @@ export default {
   },
 }
 </script>
+
+<style scoped>
+.post-list {
+  max-width: 650px !important;
+}
+</style>
