@@ -1,3 +1,16 @@
 <template lang="pug">
-  p registration page
+  .columns.is-centered
+    .column.is-half
+      .section
+        RegistrationForm
 </template>
+
+<script>
+import RegistrationForm from '@/components/RegistrationForm'
+
+export default {
+  components: {
+    RegistrationForm,
+  },
+}
+</script>
