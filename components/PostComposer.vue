@@ -114,6 +114,9 @@ export default {
         await this.uploadAttachment(url, att)
       }
       this.$emit('posted', data.createPost)
+      this.$router.push({
+        path: '/',
+      })
     },
     async getUploadLink(postId, fileName) {
       const { data } = await this.$apollo.mutate({
