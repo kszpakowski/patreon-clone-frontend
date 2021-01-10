@@ -31,7 +31,7 @@
             .content
               p
                 strong {{comment.author.name}}
-                small  {{comment.createdAt}}
+                small  {{comment.createdAt | ago}}
                 br
                 | {{comment.message}}
                 br
@@ -46,7 +46,6 @@
                 p.control
                   textarea.textarea(placeholder="Add a comment..." v-model="commentText")
               .field
-                //- p.control
                 .level
                   .level-left
                     .level-item
