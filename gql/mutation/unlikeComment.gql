@@ -1,0 +1,8 @@
+mutation UnlikeCommentMutation($commentId: Int!) {
+  unlikeComment(commentId: $commentId) {
+    errors {
+      message
+      code
+    }
+  }
+}

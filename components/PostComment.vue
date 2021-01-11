@@ -23,6 +23,7 @@ article.media
 <script>
 import CommentReplyEditor from '@/components/CommentReplyEditor'
 import LikeCommentMutation from '@/gql/mutation/likeComment'
+import UnlikeCommentMutation from '@/gql/mutation/unlikeComment'
 
 export default {
   name: 'PostComment',
@@ -47,7 +48,19 @@ export default {
   methods: {
     async likeComment() {
       if (this.comment.liked) {
-        console.log('unliking')
+        const resp = await this.$apollo.mutate({
+          mutation: UnlikeCommentMutation,
+          variables: {
+            commentId: this.comment.id,
+          },
+        })
+        const { errors } = resp.data.unlikeComment
+
+        if (errors) {
+          console.log(errors)
+        } else {
+          this.$emit('unliked')
+        }
       } else {
         const resp = await this.$apollo.mutate({
           mutation: LikeCommentMutation,
