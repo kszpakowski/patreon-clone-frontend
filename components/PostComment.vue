@@ -14,9 +14,10 @@ article.media
         small
           a(@click="likeComment") {{comment.likes}} {{ comment.likes === 1 ? 'Like' : 'Likes' }}
           | 
-          a(@click="showReplyEditor=!showReplyEditor") · Reply
+          a(v-if="allowReply" @click="showReplyEditor=!showReplyEditor") · Reply
           |  · {{comment.createdAt | ago}}
       CommentReplyEditor(v-if="showReplyEditor" :commentId="comment.id" @close="showReplyEditor=false")
+      PostComment(v-for="reply in comment.replies" :key="reply.id" :comment="reply")
 </template>
 
 <script>
@@ -24,11 +25,18 @@ import CommentReplyEditor from '@/components/CommentReplyEditor'
 import LikeCommentMutation from '@/gql/mutation/likeComment'
 
 export default {
-  components: { CommentReplyEditor },
+  name: 'PostComment',
+  components: {
+    CommentReplyEditor,
+  },
   props: {
     comment: {
       type: Object,
       required: true,
+    },
+    allowReply: {
+      type: Boolean,
+      required: false,
     },
   },
   data() {

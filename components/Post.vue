@@ -40,7 +40,7 @@
             a {{post.commentsCount }} {{ post.commentsCount ===1 ? 'Comment' : 'Comments' }} 
     footer.card-footer
       div.p-5.comments(v-if="showComments")
-        PostComment(v-for="comment in post.comments" :comment="comment" :key="comment.id")
+        PostComment(v-for="comment in post.comments" :comment="comment" :key="comment.id" allowReply)
         CommentEditor(v-if="post.canComment" :postId="post.id" @commented="(e) => $emit('commented',e)")
 </template>
 

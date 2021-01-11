@@ -19,6 +19,17 @@
         name
         avatarUrl
       }
+      replies {
+        id
+        createdAt
+        message
+        likes
+        liked
+        author {
+          name
+          avatarUrl
+        }
+      }
     }
     likesCount
     liked
