@@ -4,12 +4,3 @@
       .container.m-4
         PostComposer
 </template>
-
-<script>
-import PostComposer from '@/components/PostComposer'
-export default {
-  components: {
-    PostComposer,
-  },
-}
-</script>
