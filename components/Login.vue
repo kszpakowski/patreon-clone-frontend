@@ -21,7 +21,7 @@
 </template>
 
 <script>
-import gql from 'graphql-tag'
+import LoginMutation from '@/gql/mutation/login'
 
 export default {
   data() {
@@ -37,16 +37,7 @@ export default {
     async handleLogin() {
       this.error = ''
       const response = await this.$apollo.mutate({
-        mutation: gql`
-          mutation LoginMutation($email: String!, $password: String!) {
-            login(loginInput: { email: $email, password: $password }) {
-              token
-              errors {
-                message
-              }
-            }
-          }
-        `,
+        mutation: LoginMutation,
         variables: this.form,
       })
 

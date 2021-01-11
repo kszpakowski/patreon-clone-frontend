@@ -16,61 +16,13 @@
 </template>
 
 <script>
-import gql from 'graphql-tag'
+import MeQuery from '@/gql/query/me'
+import PostsQuery from '@/gql/query/posts'
 
 export default {
   apollo: {
-    posts: gql`
-      {
-        posts {
-          id
-          title
-          createdAt
-          locked
-          attachments {
-            url
-          }
-          commentsCount
-          canComment
-          comments {
-            createdAt
-            message
-            author {
-              name
-              avatarUrl
-            }
-          }
-          likesCount
-          liked
-          canLike
-          author {
-            name
-          }
-          tier {
-            id
-            name
-            price
-          }
-        }
-      }
-    `,
-    me: gql`
-      {
-        me {
-          id
-          name
-          subscriptions {
-            tier {
-              name
-              owner {
-                name
-              }
-            }
-            expiresAt
-          }
-        }
-      }
-    `,
+    posts: PostsQuery,
+    me: MeQuery,
   },
 }
 </script>

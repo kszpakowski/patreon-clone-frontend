@@ -1,0 +1,15 @@
+{
+  me {
+    id
+    name
+    subscriptions {
+      tier {
+        name
+        owner {
+          name
+        }
+      }
+      expiresAt
+    }
+  }
+}

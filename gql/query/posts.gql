@@ -1,0 +1,32 @@
+{
+  posts {
+    id
+    title
+    createdAt
+    locked
+    attachments {
+      url
+    }
+    commentsCount
+    canComment
+    comments {
+      createdAt
+      message
+      author {
+        name
+        avatarUrl
+      }
+    }
+    likesCount
+    liked
+    canLike
+    author {
+      name
+    }
+    tier {
+      id
+      name
+      price
+    }
+  }
+}

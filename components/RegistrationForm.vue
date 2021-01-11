@@ -25,7 +25,7 @@
 </template>
 
 <script>
-import gql from 'graphql-tag'
+import RegisterMutation from '@/gql/mutation/register'
 
 export default {
   data() {
@@ -42,22 +42,7 @@ export default {
     async handleRegister() {
       this.error = ''
       const registerResponse = await this.$apollo.mutate({
-        mutation: gql`
-          mutation RegisterMutation(
-            $name: String!
-            $email: String!
-            $password: String!
-          ) {
-            register(
-              registerInput: { name: $name, email: $email, password: $password }
-            ) {
-              token
-              errors {
-                message
-              }
-            }
-          }
-        `,
+        mutation: RegisterMutation,
         variables: this.form,
       })
 
