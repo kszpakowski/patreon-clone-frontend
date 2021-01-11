@@ -25,6 +25,8 @@ import CommentReplyEditor from '@/components/CommentReplyEditor'
 import LikeCommentMutation from '@/gql/mutation/likeComment'
 import UnlikeCommentMutation from '@/gql/mutation/unlikeComment'
 
+import PostsQuery from '@/gql/query/posts'
+
 export default {
   name: 'PostComment',
   components: {
@@ -48,34 +50,57 @@ export default {
   methods: {
     async likeComment() {
       if (this.comment.liked) {
-        const resp = await this.$apollo.mutate({
+        await this.$apollo.mutate({
           mutation: UnlikeCommentMutation,
           variables: {
             commentId: this.comment.id,
           },
+          update: (store, { data: { unlikeComment } }) => {
+            const { errors } = unlikeComment
+            if (!errors) {
+              const data = store.readQuery({ query: PostsQuery })
+              const comment = this.findComment(data.posts, this.comment.id)
+              comment.liked = false
+              comment.likes -= 1
+              store.writeQuery({ query: PostsQuery, data })
+            }
+          },
         })
-        const { errors } = resp.data.unlikeComment
-
-        if (errors) {
-          console.log(errors)
-        } else {
-          this.$emit('unliked')
-        }
       } else {
-        const resp = await this.$apollo.mutate({
+        await this.$apollo.mutate({
           mutation: LikeCommentMutation,
           variables: {
             commentId: this.comment.id,
           },
+          update: (store, { data: { likeComment } }) => {
+            const { errors } = likeComment
+            if (!errors) {
+              const data = store.readQuery({ query: PostsQuery })
+              const comment = this.findComment(data.posts, this.comment.id)
+              comment.liked = true
+              comment.likes += 1
+              store.writeQuery({ query: PostsQuery, data })
+            }
+          },
         })
-        const { errors } = resp.data.likeComment
-
-        if (errors) {
-          console.log(errors)
-        } else {
-          this.$emit('liked')
-        }
       }
+    },
+    // TODO this could be simpler with comment query
+    findComment(posts, commentId) {
+      const [comment] = posts
+        .flatMap((p) => this.commentsFromReplies(p.comments))
+        .filter((c) => c.id === commentId)
+      return comment
+    },
+    commentsFromReplies(comments) {
+      const result = []
+      for (const comment of comments) {
+        if (comment.replies) {
+          result.push(...this.commentsFromReplies(comment.replies))
+        }
+        result.push(comment)
+      }
+      return result
     },
   },
 }
