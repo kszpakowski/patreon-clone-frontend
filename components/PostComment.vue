@@ -17,7 +17,7 @@ article.media
           a(v-if="allowReply" @click="showReplyEditor=!showReplyEditor") · Reply
           |  · {{comment.createdAt | ago}}
       CommentReplyEditor(v-if="showReplyEditor" :commentId="comment.id" @close="showReplyEditor=false")
-      PostComment(v-for="reply in comment.replies" :key="reply.id" :comment="reply")
+    PostComment(v-for="reply in comment.replies" :key="reply.id" :comment="reply")
 </template>
 
 <script>
