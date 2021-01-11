@@ -186,5 +186,3 @@ export default {
   color: #fff !important;
 }
 </style>
-
-// TODO on click display modal with full size photo
