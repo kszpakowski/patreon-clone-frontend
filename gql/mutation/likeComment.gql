@@ -1,0 +1,8 @@
+mutation LikeCommentMutation($commentId: Int!) {
+  likeComment(commentId: $commentId) {
+    errors {
+      message
+      code
+    }
+  }
+}

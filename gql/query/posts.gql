@@ -13,6 +13,8 @@
       id
       createdAt
       message
+      likes
+      liked
       author {
         name
         avatarUrl

@@ -13,7 +13,7 @@ article.media(v-if="showEditor")
           .level-item(@click="showEditor=false")
             a Close
 div(v-else)
-  level
+  .level
     .level-left
       .level-item
         a(@click="showEditor=true") Add comment
