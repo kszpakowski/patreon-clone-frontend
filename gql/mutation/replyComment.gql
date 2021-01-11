@@ -1,0 +1,18 @@
+mutation ReplyCommentMutation($commentId: Int!, $message: String!) {
+  replyComment(
+    commentReplyInput: { commentId: $commentId, message: $message }
+  ) {
+    reply {
+      createdAt
+      message
+      author {
+        name
+        avatarUrl
+      }
+    }
+    errors {
+      message
+      code
+    }
+  }
+}
