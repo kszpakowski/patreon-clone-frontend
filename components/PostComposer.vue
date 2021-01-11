@@ -51,12 +51,8 @@
 
 <script>
 import gql from 'graphql-tag'
-import Tier from '@/components/Tier'
-import Post from '@/components/Post'
-import Dropzone from '@/components/Dropzone'
 
 export default {
-  components: { Tier, Post, Dropzone },
   data() {
     return {
       post: {

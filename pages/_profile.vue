@@ -23,14 +23,8 @@
 
 <script>
 import gql from 'graphql-tag'
-import Post from '@/components/Post'
-import Tier from '@/components/Tier'
 
 export default {
-  components: {
-    Post,
-    Tier,
-  },
   apollo: {
     profile: {
       query: gql`

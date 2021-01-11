@@ -20,7 +20,7 @@
       .columns.is-centered
         .column.is-full
           nuxt
-    footer.footer
+    //- footer.footer
       .content.has-text-centered
         p
           strong Patreon Clone
@@ -82,8 +82,10 @@ export default {
 
 <style scoped>
 .footer {
-  position: fixed;
-  width: 100%;
+  /* position: fixed; */
+  /* width: 100%; */
+  position: absolute;
   bottom: 0;
+  width: 100%;
 }
 </style>

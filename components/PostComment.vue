@@ -87,20 +87,22 @@ export default {
     },
     // TODO this could be simpler with comment query
     findComment(posts, commentId) {
-      const [comment] = posts
-        .flatMap((p) => this.commentsFromReplies(p.comments))
-        .filter((c) => c.id === commentId)
-      return comment
+      const comments = posts.flatMap((p) => p.comments)
+      return this.findCommentRecursive(comments, commentId)
     },
-    commentsFromReplies(comments) {
-      const result = []
+    findCommentRecursive(comments, id) {
       for (const comment of comments) {
-        if (comment.replies) {
-          result.push(...this.commentsFromReplies(comment.replies))
+        if (comment.id === id) {
+          return comment
         }
-        result.push(comment)
+        if (comment.replies) {
+          const found = this.findCommentRecursive(comment.replies, id)
+          if (found) {
+            return found
+          }
+        }
       }
-      return result
+      return null
     },
   },
 }
