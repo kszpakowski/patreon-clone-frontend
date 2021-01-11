@@ -40,41 +40,16 @@
             a {{post.commentsCount }} {{ post.commentsCount ===1 ? 'Comment' : 'Comments' }} 
     footer.card-footer
       div.p-5.comments(v-if="showComments")
-        article.media(v-for="comment in post.comments")
-          figure.media-left
-            p.image.is-48x48
-              img.is-rounded(:src="comment.author.avatarUrl")
-          .media-content
-            .content
-              p
-                strong {{comment.author.name}}
-                small  {{comment.createdAt | ago}}
-                br
-                | {{comment.message}}
-                br
-                small
-                  a Like 
-                  a  · Reply
-                  |  · {{comment.createdAt | ago}}
-        div(v-if="post.canComment")
-          article.media
-            .media-content
-              .field
-                p.control
-                  textarea.textarea(placeholder="Add a comment..." v-model="commentText")
-              .field
-                .level
-                  .level-left
-                    .level-item
-                      button.button(@click="postComment") Post comment
-                  .level-right
-                    .level-item(@click="showComments=false")
-                      a Close comments
+        PostComment(v-for="comment in post.comments" :comment="comment" :key="comment.id")
+        CommentEditor(v-if="post.canComment" :postId="post.id" @commented="(e) => $emit('commented',e)")
 </template>
 
 <script>
 import gql from 'graphql-tag'
+import PostComment from '@/components/PostComment'
+import CommentEditor from '@/components/CommentEditor'
 export default {
+  components: { PostComment, CommentEditor },
   props: {
     post: {
       type: Object,
@@ -84,7 +59,6 @@ export default {
   data() {
     return {
       showComments: false,
-      commentText: '',
     }
   },
   computed: {
@@ -145,40 +119,6 @@ export default {
         this.$emit('liked')
       } else {
         console.log(data.likePost.errors)
-      }
-    },
-    async postComment() {
-      const { data } = await this.$apollo.mutate({
-        mutation: gql`
-          mutation CommentPostMutation($postId: Int!, $message: String!) {
-            commentPost(
-              commentPostInput: { postId: $postId, message: $message }
-            ) {
-              comment {
-                createdAt
-                message
-                author {
-                  name
-                  avatarUrl
-                }
-              }
-              errors {
-                message
-                code
-              }
-            }
-          }
-        `,
-        variables: {
-          postId: this.post.id,
-          message: this.commentText,
-        },
-      })
-      if (!data.commentPost.errors) {
-        this.commentText = ''
-        this.$emit('commented', data.commentPost.comment)
-      } else {
-        console.log(data.commentPost.errors)
       }
     },
   },

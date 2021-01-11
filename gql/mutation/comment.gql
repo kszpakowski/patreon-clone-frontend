@@ -1,0 +1,16 @@
+mutation CommentPostMutation($postId: Int!, $message: String!) {
+  commentPost(commentPostInput: { postId: $postId, message: $message }) {
+    comment {
+      createdAt
+      message
+      author {
+        name
+        avatarUrl
+      }
+    }
+    errors {
+      message
+      code
+    }
+  }
+}
